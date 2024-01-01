@@ -492,12 +492,11 @@ def date_match(password, _ranked_dictionaries=RANKED_DICTIONARIES):
                 continue
             candidates = []
             for k, l in DATE_SPLITS[len(token)]:
-                dmy = map_ints_to_dmy([
+                if dmy := map_ints_to_dmy([
                     int(token[0:k]),
                     int(token[k:l]),
                     int(token[l:])
-                ])
-                if dmy:
+                ]):
                     candidates.append(dmy)
             if not len(candidates) > 0:
                 continue
@@ -627,8 +626,7 @@ def map_ints_to_dmy(ints):
     # given no four-digit year, two digit years are the most flexible int to
     # match, so try to parse a day-month out of ints[0..1] or ints[1..0]
     for y, rest in possible_four_digit_splits:
-        dm = map_ints_to_dm(rest)
-        if dm:
+        if dm := map_ints_to_dm(rest):
             y = two_to_four_digit_year(y)
             return {
                 'year': y,
